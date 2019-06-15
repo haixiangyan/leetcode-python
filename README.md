@@ -1,2 +1,2 @@
-# leetcode-java
-Java solutions to coding questions in Leetcode
+# lintcode-python
+Python solutions to coding questions in Lintcode
