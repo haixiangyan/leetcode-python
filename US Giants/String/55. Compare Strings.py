@@ -8,20 +8,17 @@ class Solution:
         if A is None or B is None:
             return False
         
-        AChars = ''.join(A)
-        BChars = ''.join(B)
+        A_chars = [0] * 256
+        B_chars = [0] * 256
         
-        ACharset = [0] * 256
-        BCharset = [0] * 256
+        for char in A:
+            A_chars[ord(char)] += 1
         
-        for i in range(len(AChars)):
-            ACharset[ord(AChars[i])] += 1
+        for char in B:
+            B_chars[ord(char)] += 1
             
-        for i in range(len(BChars)):
-            BCharset[ord(BChars[i])] += 1
-            
-        for i in range(0, 256):
-            if BCharset[i] > ACharset[i]:
+        for i in range(256):
+            if A_chars[i] < B_chars[i]:
                 return False
                 
         return True
