@@ -1,5 +1,4 @@
 from collections import deque
-
 class TreeNode:
     def __init__(self, val):
         self.val = val
@@ -13,22 +12,23 @@ class Solution:
     to serialize a binary tree which denote by a root node to a string which
     can be easily deserialized by your own "deserialize" method later.
     """
-
     def serialize(self, root):
         if root is None:
-            return ""
+            return ''
 
-        # use bfs to serialize the tree
         queue = deque([root])
-        bfs_order = []
-        while queue:
+        results = []
+
+        while len(queue) != 0:
             node = queue.popleft()
-            bfs_order.append(str(node.val) if node else '#')
-            if node:
+
+            results.append(str(node.val) if node is not None else '#')
+
+            if node is not None:
                 queue.append(node.left)
                 queue.append(node.right)
 
-        return ' '.join(bfs_order)
+        return ' '.join(results)
 
     """
     @param data: A string serialized by your serialize method.
@@ -38,25 +38,26 @@ class Solution:
     designed by yourself, and deserialize it here as you serialize it in 
     "serialize" method.
     """
-
     def deserialize(self, data):
-        # None or ""
         if not data:
             return None
 
-        bfs_order = [
+        tree_nodes = [
             TreeNode(int(val)) if val != '#' else None
-            for val in data.split()
+            for val in data.split(' ')
         ]
-        root = bfs_order[0]
-        fast_index = 1
 
-        nodes, slow_index = [root], 0
+        root = tree_nodes[0]
+        slow_index, fast_index = 0, 1
+        nodes = [root]
+
         while slow_index < len(nodes):
             node = nodes[slow_index]
+
+            node.left = tree_nodes[fast_index]
+            node.right = tree_nodes[fast_index + 1]
+
             slow_index += 1
-            node.left = bfs_order[fast_index]
-            node.right = bfs_order[fast_index + 1]
             fast_index += 2
 
             if node.left:
