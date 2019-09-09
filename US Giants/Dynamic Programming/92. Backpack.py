@@ -14,6 +14,7 @@ class Solution:
             dp[i][0] = True
             for j in range(1, m + 1):
                 if j >= A[i - 1]:
+                    # 前 i - 1 个可以凑到 j or 前 i - 1 不要 A[i - 1] 时也是否能凑到 j
                     dp[i][j] = dp[i - 1][j] or dp[i - 1][j - A[i - 1]]
                 else:
                     dp[i][j] = dp[i - 1][j]
