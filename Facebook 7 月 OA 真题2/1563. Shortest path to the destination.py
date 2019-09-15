@@ -35,7 +35,7 @@ class Solution:
                             self.visited.add('' + str(next_x) + '-' + str(next_y))
                             queue.append([next_x, next_y])
 
-        return 0
+        return -1
 
     def is_valid(self, targetMap, x, y):
         row, col = len(targetMap), len(targetMap[0])
