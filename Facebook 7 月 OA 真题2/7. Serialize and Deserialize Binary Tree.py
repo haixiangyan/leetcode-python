@@ -1,5 +1,6 @@
 from collections import deque
 
+
 class TreeNode:
     def __init__(self, val):
         self.val = val
@@ -19,18 +20,15 @@ class Solution:
             return ''
 
         queue = deque([root])
-        result = [root.val]
+        result = []
 
         while queue:
-            queueLength = len(queue)
-            for i in range(queueLength):
-                node = queue.popleft()
-                result.append(root.val if node else '#')
+            node = queue.popleft()
+            result.append(str(node.val) if node else '#')
 
-                if root.left:
-                    queue.append(root.left)
-                if root.right:
-                    queue.append(root.right)
+            if node:
+                queue.append(node.left)
+                queue.append(node.right)
 
         return ','.join(result)
 
@@ -47,22 +45,26 @@ class Solution:
         if not data or data == '':
             return None
 
-        nodeValues = data.split(',')
-        root = TreeNode(nodeValues[0])
-        queue = deque({"node": root, "index": 0})
+        nodeValues = [
+            TreeNode(int(val)) if val != '#' else None
+            for val in data.split(',')
+        ]
 
-        while queue:
-            queueLength = len(queue)
-            for i in range(queueLength):
-                info = queue.popleft()
+        root = nodeValues[0]
+        nodes = [root]
+        slowIndex, fastIndex = 0, 1
 
-                leftNodeValue = nodeValues[2 * info.index + 1]
-                rightNodeValue = nodeValues[2 * info.index + 2]
+        while slowIndex < len(nodes):
+            node = nodes[slowIndex]
+            node.left = nodeValues[fastIndex]
+            node.right = nodeValues[fastIndex + 1]
 
-                info.node.left = None if leftNodeValue == '#' else TreeNode(leftNodeValue)
-                info.node.right = None if rightNodeValue == '#' else TreeNode(rightNodeValue)
+            slowIndex += 1
+            fastIndex += 2
 
-                queue.append({"node": info.node.left, "index": (2 * info.index + 1)})
-                queue.append({"node": info.node.right, "index": (2 * info.index + 2)})
+            if node.left:
+                nodes.append(node.left)
+            if node.right:
+                nodes.append(node.right)
 
         return root
