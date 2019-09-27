@@ -5,6 +5,7 @@ class Person:
         self.cities = cities
         self.curtCity = -1
         self.cityNum = len(cities)
+        self.trackState = [state]
 
     def visitNextCity(self):
         self.curtCity = (self.curtCity + 1) % self.cityNum
@@ -13,84 +14,115 @@ class Person:
         return '{name: ' + self.name + ', state: ' + self.state + ', cities: ' + str(self.cities) + '}'
 
 
-def solve(data):
-    cityStates = {}
-    people = parsePeople(data)
+SICK = 'SICK'
+HEALTHY = 'HEALTHY'
+RECOVERING = 'RECOVERING'
 
-    for _ in range(99):
+
+def traceDisease(data):
+    cityStates = {}
+    people, healthyNum = parsePeople(data)
+    n = len(people)
+    days = 1
+
+    while healthyNum != n and days <= 365:
         cityPeople = {}
         for person in people:
             # Visit next city
             person.visitNextCity()
 
-            # Update city state
             city = person.cities[person.curtCity]
-            if city not in cityStates:
-                cityStates[city] = 'healthy'
-            cityStates[city] = updateCityState(cityStates[city], growState(person.state))
 
             # Markdown this person
             if city not in cityPeople:
                 cityPeople[city] = []
             cityPeople[city].append(person)
 
+            # Update city state
+            if city not in cityStates or len(cityPeople[city]) == 1:
+                cityStates[city] = HEALTHY
+            if days == 1:
+                cityStates[city] = updateCityState(cityStates[city], person.state)
+            else:
+                cityStates[city] = updateCityState(cityStates[city], growState(person.state))
+
         # Update people state
         for city in cityPeople:
             while cityPeople[city]:
                 curtPerson = cityPeople[city].pop()
-                curtPerson.state = updatePeopleState(cityStates[city], growState(curtPerson.state))
-    # All people
+                prevState = curtPerson.state
+                if days == 1:
+                    curtPerson.state = updatePeopleState(cityStates[city], curtPerson.state)
+                else:
+                    curtPerson.state = updatePeopleState(cityStates[city], growState(curtPerson.state))
+                curtPerson.trackState.append(curtPerson.state)
+
+                if prevState == HEALTHY and curtPerson.state != HEALTHY:
+                    healthyNum -= 1
+                if prevState != HEALTHY and curtPerson.state == HEALTHY:
+                    healthyNum += 1
+        days += 1
+    results = []
+    names = []
     for p in people:
-        print(p)
-    return cityStates
+        names.append(p.name)
+    results.append(' '.join(names))
+    for i in range(len(people[0].trackState)):
+        curt_states = []
+        for p in people:
+            curt_states.append(p.trackState[i])
+        results.append(' '.join(curt_states))
+
+    results.append(str(days - 1 if days != 1 else 1))
+
+    return results
 
 
 # Parse input data
 def parsePeople(people):
     results = []
+    healthyNum = 0
     for person in people:
         data = person.split(' ')
         name = data[0]
         state = data[1]
-        cities = data[2].split('-')
+        if state == HEALTHY:
+            healthyNum += 1
+        cities = data[2:]
 
         results.append(Person(name, state, cities))
-    return results
+    return results, healthyNum
 
 
 # Union states
 def updateCityState(curtState, newState):
-    if (curtState == 'sick' or curtState == 'recovering') and newState == 'healthy':
-        return 'sick'
-    if (newState == 'sick' or newState == 'recovering') and curtState == 'healthy':
-        return 'sick'
-    if curtState == 'healthy' and newState == 'healthy':
-        return 'healthy'
-    return 'recovering'
+    if (curtState == SICK or curtState == RECOVERING) and newState == HEALTHY:
+        return SICK
+    if (newState == SICK or newState == RECOVERING) and curtState == HEALTHY:
+        return SICK
+    if curtState == HEALTHY and newState == HEALTHY:
+        return HEALTHY
+    return RECOVERING
+
 
 def updatePeopleState(cityState, peopleState):
-    if (cityState == 'sick' or cityState == 'recovering') and peopleState == 'healthy':
-        return 'sick'
+    if (cityState == SICK or cityState == RECOVERING) and peopleState == HEALTHY:
+        return SICK
     return peopleState
+
 
 # Grow state
 def growState(curtState):
-    if curtState == 'sick':
-        return 'recovering'
-    if curtState == 'recovering':
-        return 'healthy'
+    if curtState == SICK:
+        return RECOVERING
+    if curtState == RECOVERING:
+        return HEALTHY
     return curtState
 
 
 data = [
-    'Pat sick XPU-JBK-TNU-BEN-HEM-ZJY-IMY-WFA-PPT',
-    'Xan sick KSB-TRV-XPU-JBK-TNU-BEN-HEM-IMY-WFA-NND',
-    'Mel sick KSB-TRV-XPU-TNU-BEN-HEM-ZJY-IMY-WFA-PPT-NND',
-    'Nick healthy KSB-TRV-JBK-HEM-IMY-WFA',
-    'Alf recovering KSB-TRV-XPU-JBK-TNU-BEN-IMY-WFA-NND',
-    'Tim healthy TRV-XPU-TNU-HEM-ZJY-PPT-NND',
-    'Irv recovering KSB-TRV-XPU-JBK-BEN-HEM-ZJY-IMY-PPT',
-    'Andy recovering XPU-JBK-TNU-BEN-HEM-ZJY-IMY-PPT-NND',
+    'Isabella RECOVERING DC',
+    'Jamal HEALTHY PaloAlto',
 ]
 
-print(solve(data))
+print(traceDisease(data))
