@@ -11,8 +11,8 @@ class Solution:
     @return: nothing
     """
     def deleteNode(self, node):
-        if node is None or node.next is None:
-            node = None
+        if node is None:
+            return None
 
         node.val = node.next.val
         node.next = node.next.next
