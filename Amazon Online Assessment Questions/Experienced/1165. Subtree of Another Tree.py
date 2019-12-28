@@ -13,10 +13,10 @@ class Solution:
         if s is None:
             return t is None
 
-        if s == t:
-            return self.compare(s, t)
+        if s.val == t.val and self.compare(s, t):
+            return True
 
-        return self.isSubtree(s.left, t.left) or self.isSubtree(s.right, t.right)
+        return self.isSubtree(s.left, t) or self.isSubtree(s.right, t)
 
     def compare(self, s, t):
         if s is None:
