@@ -13,7 +13,7 @@ class Solution:
                 if matrix[i][j] == 1:
                     side = self.get_side(dp, i, j)
                     max_area = max(max_area, side * side)
-                    dp[i][j] = side * side
+                    dp[i][j] = side
 
         return max_area
 
