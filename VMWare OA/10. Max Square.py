@@ -1,5 +1,3 @@
-from collections import deque
-
 class Solution:
     def max_square(self, matrix):
         if not matrix or not matrix[0]:
