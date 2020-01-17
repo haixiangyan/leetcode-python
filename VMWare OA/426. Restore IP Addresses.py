@@ -6,6 +6,9 @@ class Solution:
     def restoreIpAddresses(self, s):
         ips = []
 
+        if len(s) > 12:
+            return ips
+
         self.dfs(s, 0, '', ips)
 
         return ips
