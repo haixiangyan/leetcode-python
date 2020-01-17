@@ -1,5 +1,9 @@
 class Solution:
-    def max_square(self, matrix):
+    """
+    @param matrix: a matrix of 0 and 1
+    @return: an integer
+    """
+    def maxSquare(self, matrix):
         if not matrix or not matrix[0]:
             return 0
 
@@ -26,13 +30,3 @@ class Solution:
         top_left__square_side = dp[i - 1][j - 1]
 
         return min(left_square_side, top_square_side, top_left__square_side) + 1
-
-
-s = Solution()
-matrix = [
-    [0, 0, 1, 1, 0, 0],
-    [0, 0, 1, 1, 0, 0],
-    [0, 0, 1, 1, 1, 1],
-    [0, 0, 1, 1, 1, 1],
-]
-print(s.max_square(matrix))
