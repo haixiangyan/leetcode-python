@@ -17,6 +17,9 @@ class Solution:
         return paths
 
     def dfs(self, root, path, target, paths):
+        if not root:
+            return
+
         curt_path = path + [root.val]
 
         if root.left is None and root.right is None:
