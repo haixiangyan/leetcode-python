@@ -4,22 +4,20 @@ class Solution:
             return 0
 
         bags = sorted(bags)
-        counts = 0
-        i = 0
-        n = len(bags)
+        left, right = 0, len(bags) - 1
+        count = 0
 
-        while i < n:
-            total = 0
-            j = i
+        while left <= right:
+            curt_sum = bags[left] + bags[right]
 
-            while j < n and total + bags[j] < 3:
-                total += bags[j]
-                j += 1
-
-            counts += 1
-            i = j
-
-        return counts
+            if curt_sum > 3:
+                count += 1
+                right -= 1
+            else:
+                left += 1
+                right -= 1
+                count += 1
+        return count
 
 s = Solution()
 bags = [1.01, 1.01, 1.99, 2.5]
