@@ -17,7 +17,7 @@ class Solution:
                 # Find most left
                 for value in most_right.values():
                     left = min(left, value)
-                    most_right.pop(s[left])
+                most_right.pop(s[left])
                 l = left + 1
             longest = max(longest, r - l)
 
