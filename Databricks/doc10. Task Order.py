@@ -1,6 +1,16 @@
 from collections import deque
 
-
+# 算task和pretask輸出task by level的那題. Just calculate indegree, bfs
+# 是像這樣
+# input = {
+# {"cook", "eat"},   // do "cook" before "eat"
+# {"study", "eat"},
+# {"sleep", "study"}}
+#
+# output (steps of a workflow):
+# {{"sleep", "cook"},.
+# {"study"},
+# {"eat"}}
 class Solution:
     """
     @param: numCourses: a total of n courses
