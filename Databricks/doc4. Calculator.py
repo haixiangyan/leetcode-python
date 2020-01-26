@@ -3,7 +3,6 @@ def calculator(str):
         return 0
 
     result, num, sign = 0, 0, 1
-    str += '+'
     for char in str:
         if char.isdigit():
             num = num * 10 + int(char)
@@ -11,6 +10,7 @@ def calculator(str):
             result += sign * num
             sign = 1 if char == '+' else -1
             num = 0
+    result += sign * num
 
     return result
 
