@@ -1,6 +1,12 @@
 import heapq
 
-
+# * We want to find employees who badged into our secured room unusually often.
+# We have an unordered list of names and access times over a single day.
+# Access times are given as three or four-digit numbers using 24-hour time, such as "800" or "2250".
+#
+# * Write a function that finds anyone who badged into the room 3 or more times in a 1-hour period,
+# and returns each time that they badged in during that period.
+# (If there are multiple 1-hour periods where this was true, just return the first one.)
 def find_3_times(records):
     status = {}
     results = {}
