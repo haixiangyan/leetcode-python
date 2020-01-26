@@ -1,3 +1,4 @@
+# 第二題加上parenthesis 例如"2+((8+2)+(3-999))"一樣回傳計算結果
 class Solution:
     """
     @param s: the given expression

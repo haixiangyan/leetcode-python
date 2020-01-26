@@ -1,3 +1,4 @@
+# 第一題是給你一個string例如"2+3-999"回傳計算結果int
 def calculator(str):
     if not str:
         return 0
