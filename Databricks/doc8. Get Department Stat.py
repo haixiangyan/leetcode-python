@@ -25,11 +25,20 @@ def get_depart_stat(employees, friendships):
         for id in departments[depart]:
             if id not in friends:
                 continue
+
+            # 2. 有其它朋友的员工数
+            has_other_depart_friend = False
             # Get their friends
             for friend in friends[id]:
                 # Check if in the same department
                 if persons[friend] != depart:
-                    results[depart][1] += 1
+                    # 1. 一共有多少个朋友是别的部门的
+                    # results[depart][1] += 1
+                    # 2. 有其它朋友的员工数
+                    has_other_depart_friend = True
+                    break
+            # 2. 有其它朋友的员工数
+            results[depart][1] += 1 if has_other_depart_friend else 0
     return results
 
 
