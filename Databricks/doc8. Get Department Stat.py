@@ -1,3 +1,4 @@
+# 2nd Question: 输出每个department里有多少人的朋友是其他部门的 ->也就是遍历一遍就好了
 def get_depart_stat(employees, friendships):
     friends = get_friends(friendships)
     persons = {}
