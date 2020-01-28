@@ -4,11 +4,17 @@ class Solution:
     @return: the duplicate one
     """
     def findDuplicate(self, nums):
-        if not nums:
-            return 0
+        if len(nums) <= 1:
+            return -1
 
-        nums = sorted(nums)
-        for i in range(1, len(nums)):
-            if nums[i - 1] == nums[i]:
-                return nums[i]
-        return 0
+        slow, fast = nums[0], nums[nums[0]]
+        while slow != fast:
+            slow = nums[slow]
+            fast = nums[nums[fast]]
+
+        slow = 0
+        while slow != fast:
+            slow = nums[slow]
+            fast = nums[fast]
+
+        return slow
