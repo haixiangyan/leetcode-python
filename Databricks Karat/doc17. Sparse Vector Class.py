@@ -4,15 +4,15 @@ class SparseVector:
         self.vector = [0 for _ in range(size)]
         self.size = size
 
-    def set(self, key, value):
+    def set(self, index, value):
         try:
-            self.vector[key] = value
+            self.vector[index] = value
         except IndexError:
             print('Index out of range')
 
-    def get(self, key):
+    def get(self, index):
         try:
-            return self.vector[key]
+            return self.vector[index]
         except IndexError:
             print('Index out of range')
             return None
@@ -20,21 +20,22 @@ class SparseVector:
     def add(self, vector):
         if vector.size != self.size:
             print('Length not equal')
-            return 0
+            return
 
         new_vector = SparseVector(self.size)
         for i in range(self.size):
-            new_vector.set(i, self.vector[i] + vector.get(i))
+            new_vector.set(i, vector.get(i) + self.get(i))
+
         return new_vector
 
     def dot(self, vector):
         if vector.size != self.size:
             print('Length not equal')
-            return 0
+            return
 
         result = 0
         for i in range(self.size):
-            result += self.vector[i] * vector.get(i)
+            result += vector.get(i) * self.get(i)
         return result
 
     def cosine(self, vector):
@@ -61,8 +62,6 @@ v2.set(1, 2.0)
 v2.set(3, 3.0)
 v3 = SparseVector(2)
 
-print(v1.add(v2))
-print(v3.add(v3))
 print(v1.add(v2))
 print(v3.add(v3))
 print(v1.dot(v2))
