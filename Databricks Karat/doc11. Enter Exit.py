@@ -1,11 +1,9 @@
 def find_invalid(badge_records):
     status = {}
-    for record in badge_records:
-        name, curt_status = record
-        if name not in status:
-            status[name] = 0
 
-        status[name] += 1 if curt_status == 'enter' else -1
+    for record in badge_records:
+        name, move = record
+        status[name] = status.get(name, 0) + (1 if move == 'enter' else -1)
 
     return [name for name in status if status[name] != 0]
 
