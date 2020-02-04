@@ -1,24 +1,22 @@
 from collections import deque
-
-
-def friends_one_place(friendship_list):
-    friends = get_friends(friendship_list)
+def friends_one_place(friendships):
+    friends = get_friends(friendships)
     queue = deque(['1'])
     visited = {'1'}
 
     while queue:
-        curt = queue.popleft()
-        for friend in friends[curt]:
+        node = queue.popleft()
+        for friend in friends[node]:
             if friend not in visited:
                 queue.append(friend)
                 visited.add(friend)
 
     return len(visited) == len(friends)
 
-def get_friends(friendship_list):
+def get_friends(friendships):
     friends = {}
-    for fs in friendship_list:
-        a, b = fs.split(',')
+    for friendship in friendships:
+        a, b = friendship.split(',')
         if a not in friends:
             friends[a] = set()
         if b not in friends:
