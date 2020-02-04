@@ -1,37 +1,29 @@
 from collections import deque
-
-
+from collections import defaultdict
 def task_order(tasks):
+    graph = defaultdict(set)
     indegrees = {}
-    graph = {}
-    for relation in tasks:
-        a, b = relation
-        if a not in indegrees:
-            indegrees[a] = 0
-        if b not in indegrees:
-            indegrees[b] = 0
-        indegrees[b] += 1
 
-        if a not in graph:
-            graph[a] = set()
-        if b not in graph:
-            graph[b] = set()
+    for task in tasks:
+        a, b = task
+
         graph[a].add(b)
         graph[b].add(a)
 
-    queue = deque([task for task in graph if indegrees[task] == 0])
+        indegrees[a] = indegrees.get(a, 0)
+        indegrees[b] = indegrees.get(b, 0) + 1
+
+    queue = deque([node for node in graph if indegrees[node] == 0])
     order = []
     while queue:
         level = []
         for _ in range(len(queue)):
-            curt_task = queue.popleft()
-            level.append(curt_task)
-
-            for next_task in graph[curt_task]:
+            curt = queue.popleft()
+            level.append(curt)
+            for next_task in graph[curt]:
                 indegrees[next_task] -= 1
                 if indegrees[next_task] == 0:
                     queue.append(next_task)
-
         order.append(level)
     return order
 
