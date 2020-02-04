@@ -1,8 +1,8 @@
 def find_history(user1, user2):
     n, m = len(user1), len(user2)
-    dp = [[0 for _ in range(m + 1)] for _ in range(n + 1)]
 
-    length, right = 0, -1
+    dp = [[0 for _ in range(m + 1)] for _ in range(n + 1)]
+    right, length = -1, 0
 
     for i in range(1, n + 1):
         for j in range(1, m + 1):
