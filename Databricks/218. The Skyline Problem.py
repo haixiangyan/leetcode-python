@@ -50,13 +50,13 @@ class Solution:
 
         return skyline
 
-    def update_skyline(self, x, y, skylines):
+    def update_skyline(self, x, y, skyline):
         # 没有这个点的时候就加入
-        if not skylines or skylines[-1][0] != x:
-            skylines.append([x, y])
+        if not skyline or skyline[-1][0] != x:
+            skyline.append([x, y])
         # 否则更新最后一个点的 y 值
         else:
-            skylines[-1][1] = y
+            skyline[-1][1] = y
 
     def append_skyline(self, rest_skyline, start, length, current_y, skyline):
         for i in range(start, length):
