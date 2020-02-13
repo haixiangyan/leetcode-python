@@ -3,38 +3,43 @@ class TreeNode:
         self.val = val
         self.left, self.right = None, None
 
+
 class Solution:
     def __init__(self):
-        self.prev = None
         self.first = None
+        self.prev = None
 
     """
     @param root: root of a tree
     @return: head node of a doubly linked list
     """
+
     def treeToDoublyList(self, root):
         if root is None:
-            return root
+            return None
 
-        self.inorder(root)
+        head, tail = self.dfs(root)
 
-        self.first.left = self.prev
-        self.prev.right = self.first
+        tail.right = head
+        head.left = tail
 
-        return self.first
+        return head
 
-    def inorder(self, root):
+    def dfs(self, root):
         if root is None:
-            return
+            return None, None
 
-        self.inorder(root.left)
+        left_head, left_tail = self.dfs(root.left)
+        right_head, right_tail = self.dfs(root.right)
 
-        if self.first is None:
-            self.first = root
+        if left_tail:
+            left_tail.right = root
+            root.left = left_tail
+        if right_head:
+            root.right = right_head
+            right_head.left = root
 
-        if self.prev is not None:
-            self.prev.right = root
-            root.left = self.prev
-        self.prev = root
+        head = left_head or root or right_head
+        tail = right_tail or root or left_tail
 
-        self.inorder(root.right)
+        return head, tail
