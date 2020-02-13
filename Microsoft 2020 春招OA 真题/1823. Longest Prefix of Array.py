@@ -18,6 +18,4 @@ class Solution:
                     found = True
                 index = i
 
-        if not found:
-            return -1
-        return index
+        return -1 if not found else index
