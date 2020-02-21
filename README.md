@@ -1,2 +1,2 @@
-# lintcode-python
-Python solutions to coding questions in Lintcode
+# leetcode-python
+Python solutions to coding questions in Leetcode
