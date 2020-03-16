@@ -6,13 +6,15 @@ class TreeNode:
         self.right = None
 
 class Solution:
-    def inorderSuccessor(self, root: 'TreeNode', p: 'TreeNode') -> 'TreeNode':
+    def trimBST(self, root: TreeNode, L: int, R: int) -> TreeNode:
         if root is None:
             return None
 
-        if p.val >= root.val:
-            return self.inorderSuccessor(root.right, p)
-
-        left = self.inorderSuccessor(root.left, p)
-
-        return left or root
+        if root.val < L:
+            return self.trimBST(root.right, L, R)
+        elif root.val > R:
+            return self.trimBST(root.left, L, R)
+        else:
+            root.left = self.trimBST(root.left, L, R)
+            root.right = self.trimBST(root.right, L, R)
+        return root
