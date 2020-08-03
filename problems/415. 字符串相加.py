@@ -1,18 +1,16 @@
 class Solution:
     def addStrings(self, num1: str, num2: str) -> str:
-        result = ''
-        i, j, carry = len(num1) - 1, len(num2) - 1, 0
+        i, j, carry, ans = len(num1) - 1, len(num2) - 1, 0, ""
 
-        while i >= 0 or j >= 0:
-            n1 = int(num1[i]) if i >= 0 else 0
-            n2 = int(num2[j]) if j >= 0 else 0
+        while i >= 0 or j >= 0 or carry:
+            val = carry
 
-            cur_sum = n1 + n2 + carry
+            if i >= 0:
+                i, val = i - 1, val + int(num1[i])
+            if j >= 0:
+                j, val = j - 1, val + int(num2[j])
 
-            carry = cur_sum // 10
+            carry, val = divmod(val, 10)
+            ans = str(val) + ans
 
-            result = str(cur_sum % 10) + result
-
-            i, j = i - 1, j - 1
-
-        return result
+        return ans
